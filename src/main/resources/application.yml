@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: ${dt_db_url:jdbc:postgresql://localhost:5432/deutsch-trainer}
+    username: ${dt_db_user:root}
+    password: ${dt_db_password:root}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: ${dt_ddl_auto:create-drop}
+    properties:
+      hibernate:
+        dialect:org.hibernate.dialect.PostgreSQL81Dialect
