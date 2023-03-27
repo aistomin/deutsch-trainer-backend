@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Istomin Andrei
+ * Copyright (c) 2023, Andrej Istomin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

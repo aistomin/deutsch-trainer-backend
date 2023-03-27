@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Istomin Andrei
+ * Copyright (c) 2023, Andrej Istomin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,19 @@
  */
 package com.github.aistomin.deutsch.trainer.backend;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Application.
  */
-@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 @SpringBootApplication
-public class DeutschTrainerBackendApplication {
+@Slf4j
+public class Application {
 
     /**
      * Application's entry point.
@@ -31,6 +35,20 @@ public class DeutschTrainerBackendApplication {
      * @param args Command line arguments.
      */
     public static void main(final String[] args) {
-        SpringApplication.run(DeutschTrainerBackendApplication.class, args);
+        SpringApplication.run(Application.class, args);
+    }
+
+    /**
+     * Command line runner.
+     *
+     * @param ctx Application context.
+     * @return Runner.
+     */
+    @Bean
+    public CommandLineRunner commandLineRunner(final ApplicationContext ctx) {
+        return args -> {
+            log.info("Application is starting .....");
+            log.info("Application is up and running.");
+        };
     }
 }

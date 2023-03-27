@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Istomin Andrei
+ * Copyright (c) 2023, Andrej Istomin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aistomin.deutsch.trainer.backend;
+package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-@SpringBootTest
-class DeutschTrainerBackendApplicationTests {
-    @Test
-    void contextLoads() {
-    }
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.util.Date;
+
+/**
+ * Test DTO.
+ *
+ * @since 0.1
+ */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public final class TestDto {
+
+    /**
+     * Test ID.
+     */
+    private Long id;
+
+    /**
+     * Date when the test was created.
+     */
+    private Date dateCreated;
 }

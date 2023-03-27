@@ -13,3 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * Test controller and related classes.
+ *
+ * @since 0.1
+ */
+package com.github.aistomin.deutsch.trainer.backend.controllers.test;
