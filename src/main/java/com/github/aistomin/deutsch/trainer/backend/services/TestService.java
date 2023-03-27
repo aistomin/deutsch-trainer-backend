@@ -13,3 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.aistomin.deutsch.trainer.backend.services;
+
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.TestDto;
+
+/**
+ * Test's service.
+ *
+ * @since 0.1
+ */
+public interface TestService {
+
+    /**
+     * Start a test.
+     *
+     * @return Test.
+     */
+    TestDto start();
+}
