@@ -5,7 +5,7 @@ spring:
     password: ${dt_db_password:root}
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
       ddl-auto: ${dt_ddl_auto:create-drop}
