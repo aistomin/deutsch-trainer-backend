@@ -15,6 +15,8 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.services;
 
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerDto;
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerResultDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.TestDto;
 
 /**
@@ -30,4 +32,12 @@ public interface TestService {
      * @return Test.
      */
     TestDto start();
+
+    /**
+     * Answer the test's question.
+     *
+     * @param answer User's answer.
+     * @return Answer result.
+     */
+    AnswerResultDto answer(AnswerDto answer);
 }

@@ -15,11 +15,19 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.services.impl;
 
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerDto;
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerResultDto;
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.QuestionDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.TestDto;
 import com.github.aistomin.deutsch.trainer.backend.services.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Test's service's implementation.
@@ -30,11 +38,77 @@ import java.util.Date;
 @Slf4j
 public final class TestServiceImpl implements TestService {
 
+    /**
+     * Temporary questions storage.
+     */
+    private final Map<String, String> questions = new HashMap<>() {{
+        put("1 + 1", "2");
+        put("2 X 2", "4");
+        put("7 * 8", "56");
+    }};
+
     @Override
     public TestDto start() {
         log.info("Starting a new test .....");
-        final var test = new TestDto(1L, new Date());
+        final Set<QuestionDto> items = this.loadQuestions();
+        final var test = new TestDto(
+            1L,
+            items,
+            new Date()
+        );
         log.info("New test has been started. Test ID: {}.", test.getId());
         return test;
+    }
+
+    /**
+     * Load questions.
+     *
+     * @return Questions.
+     */
+    private Set<QuestionDto> loadQuestions() {
+        final Set<QuestionDto> items = new HashSet<>();
+        long i = 1;
+        for (Map.Entry<String, String> question : this.questions.entrySet()) {
+            items.add(
+                new QuestionDto(i, question.getKey(), new Date())
+            );
+            i++;
+        }
+        return items;
+    }
+
+    @Override
+    public AnswerResultDto answer(final AnswerDto answer) {
+        final var question = this.loadQuestions()
+            .stream()
+            .filter(item ->
+                Objects.equals(item.getId(), answer.getQuestionId())
+            ).findFirst();
+        final var provided = answer.getText();
+        if (question.isPresent()) {
+            final var correct = this.questions.get(question.get().getText());
+            if (correct.equals(provided)) {
+                return new AnswerResultDto(
+                    answer.getQuestionId(),
+                    AnswerResultDto.Result.RIGHT,
+                    provided,
+                    correct
+                );
+            } else {
+                return new AnswerResultDto(
+                    answer.getQuestionId(),
+                    AnswerResultDto.Result.WRONG,
+                    provided,
+                    correct
+                );
+            }
+        } else {
+            return new AnswerResultDto(
+                answer.getQuestionId(),
+                AnswerResultDto.Result.NOT_FOUND,
+                provided,
+                null
+            );
+        }
     }
 }

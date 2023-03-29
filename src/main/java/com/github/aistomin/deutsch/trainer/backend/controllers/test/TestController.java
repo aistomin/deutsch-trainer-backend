@@ -17,6 +17,8 @@ package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
 import com.github.aistomin.deutsch.trainer.backend.services.TestService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,5 +53,16 @@ public final class TestController {
     @GetMapping("/start")
     public TestDto start() {
         return this.test.start();
+    }
+
+    /**
+     * Answer the test's question.
+     *
+     * @param answer User's answer.
+     * @return Answer result.
+     */
+    @PostMapping("/answer")
+    public AnswerResultDto answer(@RequestBody final AnswerDto answer) {
+        return this.test.answer(answer);
     }
 }

@@ -20,6 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Test for {@link TestController}.
@@ -46,5 +50,56 @@ class TestControllerTest {
         Assertions.assertNotNull(test);
         Assertions.assertEquals(1L, test.getId());
         Assertions.assertNotNull(test.getDateCreated());
+        Assertions.assertEquals(3, test.getQuestions().size());
+    }
+
+    /**
+     * Check that we can correctly answer questions.
+     */
+    @Test
+    void testAnswer() {
+        final var test = this.template.getForEntity(
+            "/test/start", TestDto.class
+        ).getBody();
+        final var question = new ArrayList<>(test.getQuestions())
+            .stream()
+            .filter(q -> q.getText().equals("7 * 8"))
+            .findFirst()
+            .get();
+        final var correct = this.template.postForEntity(
+            "/test/answer",
+            new HttpEntity<>(
+                new AnswerDto(question.getId(), "56")
+            ),
+            AnswerResultDto.class
+        );
+        Assertions.assertEquals(200, correct.getStatusCode().value());
+        Assertions.assertEquals(
+            AnswerResultDto.Result.RIGHT, correct.getBody().getResult()
+        );
+        final var wrong = this.template.postForEntity(
+            "/test/answer",
+            new HttpEntity<>(
+                new AnswerDto(question.getId(), "10")
+            ),
+            AnswerResultDto.class
+        );
+        Assertions.assertEquals(200, wrong.getStatusCode().value());
+        Assertions.assertEquals(
+            AnswerResultDto.Result.WRONG, wrong.getBody().getResult()
+        );
+        Assertions.assertEquals("10", wrong.getBody().getProvided());
+        Assertions.assertEquals("56", wrong.getBody().getCorrect());
+        final var missing = this.template.postForEntity(
+            "/test/answer",
+            new HttpEntity<>(
+                new AnswerDto(666L, "10")
+            ),
+            AnswerResultDto.class
+        );
+        Assertions.assertEquals(200, missing.getStatusCode().value());
+        Assertions.assertEquals(
+            AnswerResultDto.Result.NOT_FOUND, missing.getBody().getResult()
+        );
     }
 }
