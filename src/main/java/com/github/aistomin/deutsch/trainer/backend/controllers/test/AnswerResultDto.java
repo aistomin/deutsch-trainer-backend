@@ -18,31 +18,55 @@ package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
-import java.util.Set;
 
 /**
- * Test DTO.
+ * Answer DTO.
  *
  * @since 0.1
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public final class TestDto {
+public final class AnswerResultDto {
 
     /**
-     * Test ID.
+     * Question ID.
      */
-    private Long id;
+    private Long questionId;
 
     /**
-     * Test's questions.
+     * Answer's result.
      */
-    private Set<QuestionDto> questions;
+    private Result result;
 
     /**
-     * Date when the test was created.
+     * Provided answer.
      */
-    private Date dateCreated;
+    private String provided;
+
+    /**
+     * Correct answer.
+     */
+    private String correct;
+
+    /**
+     * Possible results.
+     */
+    public enum Result {
+
+        /**
+         * The answer is correct.
+         */
+        RIGHT,
+
+        /**
+         * The answer is not correct.
+         */
+        WRONG,
+
+        /**
+         * The question is not found.
+         */
+        NOT_FOUND
+    }
 }

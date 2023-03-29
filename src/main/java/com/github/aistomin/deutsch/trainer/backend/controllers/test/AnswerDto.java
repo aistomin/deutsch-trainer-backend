@@ -18,31 +18,24 @@ package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
-import java.util.Set;
 
 /**
- * Test DTO.
+ * Answer DTO.
  *
  * @since 0.1
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public final class TestDto {
+public final class AnswerDto {
 
     /**
-     * Test ID.
+     * Question ID.
      */
-    private Long id;
+    private Long questionId;
 
     /**
-     * Test's questions.
+     * Answer's text.
      */
-    private Set<QuestionDto> questions;
-
-    /**
-     * Date when the test was created.
-     */
-    private Date dateCreated;
+    private String text;
 }

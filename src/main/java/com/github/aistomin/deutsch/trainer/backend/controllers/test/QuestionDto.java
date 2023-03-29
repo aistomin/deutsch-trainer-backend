@@ -19,30 +19,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
-import java.util.Set;
 
 /**
- * Test DTO.
+ * Question DTO.
  *
  * @since 0.1
  */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public final class TestDto {
+public final class QuestionDto {
 
     /**
-     * Test ID.
+     * Question ID.
      */
     private Long id;
 
     /**
-     * Test's questions.
+     * Question's text.
      */
-    private Set<QuestionDto> questions;
+    private String text;
 
     /**
-     * Date when the test was created.
+     * Date when the question was created.
      */
     private Date dateCreated;
 }
