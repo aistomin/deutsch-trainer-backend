@@ -15,6 +15,8 @@
  */
 package com.github.aistomin.deutsch.trainer.backend;
 
+import com.github.aistomin.deutsch.trainer.backend.model.User;
+import com.github.aistomin.deutsch.trainer.backend.model.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +30,20 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @Slf4j
 public class Application {
+
+    /**
+     * User repository.
+     */
+    private final UserRepository users;
+
+    /**
+     * Ctor.
+     *
+     * @param repository User repository.
+     */
+    public Application(final UserRepository repository) {
+        this.users = repository;
+    }
 
     /**
      * Application's entry point.
@@ -48,6 +64,12 @@ public class Application {
     public CommandLineRunner commandLineRunner(final ApplicationContext ctx) {
         return args -> {
             log.info("Application is starting .....");
+            final var andrej = "andrej";
+            if (this.users.findByUsername(andrej) == null) {
+                log.info("Admin user does not exist, let's create it .....");
+                this.users.save(new User(null, andrej));
+                log.info("Admin user is created. Username: {}", andrej);
+            }
             log.info("Application is up and running.");
         };
     }
