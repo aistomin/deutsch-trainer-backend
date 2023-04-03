@@ -21,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Test for {@link TestController}.
@@ -31,7 +29,7 @@ import java.util.Set;
  * @since 0.1
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TestControllerTest {
+final class TestControllerTest {
 
     /**
      * Test REST template.
