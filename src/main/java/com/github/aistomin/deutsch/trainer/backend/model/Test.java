@@ -13,53 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aistomin.deutsch.trainer.backend.controllers.test;
+package com.github.aistomin.deutsch.trainer.backend.model;
 
-import com.github.aistomin.deutsch.trainer.backend.model.Test;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.Date;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * Test DTO.
+ * Data object that stores test's data.
  *
  * @since 0.1
  */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public final class TestDto {
+@Entity
+@Table(name = "dt_test")
+public final class Test {
 
     /**
      * Test ID.
      */
+    @Id
+    @GeneratedValue(
+        strategy = GenerationType.IDENTITY
+    )
     private Long id;
 
     /**
-     * Test's questions.
+     * Questions.
      */
-    private Set<QuestionDto> questions;
+    @OneToMany
+    private Set<Question> questions;
 
     /**
      * Date when the test was created.
      */
+    @Column(nullable = false)
     private Date dateCreated;
-
-    /**
-     * Ctor.
-     *
-     * @param test Test.
-     */
-    public TestDto(final Test test) {
-        this(
-            test.getId(),
-            test.getQuestions()
-                .stream()
-                .map(QuestionDto::new).collect(Collectors.toSet()),
-            test.getDateCreated()
-        );
-    }
 }
