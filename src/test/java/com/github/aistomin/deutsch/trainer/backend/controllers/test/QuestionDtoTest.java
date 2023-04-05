@@ -15,9 +15,7 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
-import com.github.aistomin.deutsch.trainer.backend.controllers.user.UserDto;
 import com.github.aistomin.deutsch.trainer.backend.model.Question;
-import com.github.aistomin.deutsch.trainer.backend.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.Date;
@@ -36,6 +34,7 @@ final class QuestionDtoTest {
     void testConvert() {
         final var question = new Question(
             new Random().nextLong(),
+            null,
             UUID.randomUUID().toString(),
             UUID.randomUUID().toString(),
             new Date()
