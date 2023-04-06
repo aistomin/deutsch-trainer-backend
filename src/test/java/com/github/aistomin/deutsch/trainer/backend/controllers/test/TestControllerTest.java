@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +49,7 @@ final class TestControllerTest {
         Assertions.assertNotNull(test);
         Assertions.assertEquals(1L, test.getId());
         Assertions.assertNotNull(test.getDateCreated());
-        Assertions.assertEquals(3, test.getQuestions().size());
+        Assertions.assertEquals(2, test.getQuestions().size());
     }
 
     /**
@@ -61,17 +62,17 @@ final class TestControllerTest {
         ).getBody();
         final var question = new ArrayList<>(test.getQuestions())
             .stream()
-            .filter(q -> q.getText().equals("7 * 8"))
+            .filter(q -> q.getText().equals("2 X 2"))
             .findFirst()
             .get();
         final var correct = this.template.postForEntity(
             "/test/answer",
             new HttpEntity<>(
-                new AnswerDto(question.getId(), "56")
+                new AnswerDto(question.getId(), "4")
             ),
             AnswerResultDto.class
         );
-        Assertions.assertEquals(200, correct.getStatusCode().value());
+        Assertions.assertEquals(HttpStatus.OK, correct.getStatusCode());
         Assertions.assertEquals(
             AnswerResultDto.Result.RIGHT, correct.getBody().getResult()
         );
@@ -82,12 +83,12 @@ final class TestControllerTest {
             ),
             AnswerResultDto.class
         );
-        Assertions.assertEquals(200, wrong.getStatusCode().value());
+        Assertions.assertEquals(HttpStatus.OK, wrong.getStatusCode());
         Assertions.assertEquals(
             AnswerResultDto.Result.WRONG, wrong.getBody().getResult()
         );
         Assertions.assertEquals("10", wrong.getBody().getProvided());
-        Assertions.assertEquals("56", wrong.getBody().getCorrect());
+        Assertions.assertEquals("4", wrong.getBody().getCorrect());
         final var missing = this.template.postForEntity(
             "/test/answer",
             new HttpEntity<>(
@@ -95,7 +96,7 @@ final class TestControllerTest {
             ),
             AnswerResultDto.class
         );
-        Assertions.assertEquals(200, missing.getStatusCode().value());
+        Assertions.assertEquals(HttpStatus.OK, missing.getStatusCode());
         Assertions.assertEquals(
             AnswerResultDto.Result.NOT_FOUND, missing.getBody().getResult()
         );
