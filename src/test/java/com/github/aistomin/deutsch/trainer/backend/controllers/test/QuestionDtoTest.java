@@ -42,6 +42,8 @@ final class QuestionDtoTest {
         final var dto = new QuestionDto(question);
         Assertions.assertEquals(question.getId(), dto.getId());
         Assertions.assertEquals(question.getText(), dto.getText());
-        Assertions.assertEquals(question.getDateCreated(), dto.getDateCreated());
+        Assertions.assertEquals(
+            question.getDateCreated(), dto.getDateCreated()
+        );
     }
 }

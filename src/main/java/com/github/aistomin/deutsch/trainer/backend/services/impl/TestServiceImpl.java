@@ -44,7 +44,6 @@ public final class TestServiceImpl implements TestService {
     private final Map<String, String> questions = new HashMap<>() {{
         put("1 + 1", "2");
         put("2 X 2", "4");
-        put("7 * 8", "56");
     }};
 
     @Override

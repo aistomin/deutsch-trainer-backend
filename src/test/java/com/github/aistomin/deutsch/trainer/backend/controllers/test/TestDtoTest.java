@@ -16,14 +16,13 @@
 package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
 import com.github.aistomin.deutsch.trainer.backend.model.Question;
+import com.github.aistomin.deutsch.trainer.backend.model.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Tests for {@link TestDto}.
@@ -33,10 +32,10 @@ final class TestDtoTest {
     /**
      * Check that we correctly convert question to the DTO.
      */
-    @Test
+    @org.junit.jupiter.api.Test
     void testConvert() {
         final var random = new Random();
-        final var test = new com.github.aistomin.deutsch.trainer.backend.model.Test(
+        final var test = new Test(
             random.nextLong(),
             new HashSet<>(
                 Arrays.asList(
