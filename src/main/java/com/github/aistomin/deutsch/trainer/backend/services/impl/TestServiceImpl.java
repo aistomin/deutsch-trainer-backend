@@ -17,17 +17,16 @@ package com.github.aistomin.deutsch.trainer.backend.services.impl;
 
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerResultDto;
-import com.github.aistomin.deutsch.trainer.backend.controllers.test.QuestionDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.TestDto;
+import com.github.aistomin.deutsch.trainer.backend.model.Question;
+import com.github.aistomin.deutsch.trainer.backend.model.QuestionRepository;
+import com.github.aistomin.deutsch.trainer.backend.model.Test;
+import com.github.aistomin.deutsch.trainer.backend.model.TestRepository;
 import com.github.aistomin.deutsch.trainer.backend.services.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * Test's service's implementation.
@@ -39,53 +38,57 @@ import java.util.Set;
 public final class TestServiceImpl implements TestService {
 
     /**
-     * Temporary questions storage.
+     * Tests' repository.
      */
-    private final Map<String, String> questions = new HashMap<>() {{
-        put("1 + 1", "2");
-        put("2 X 2", "4");
-    }};
+    private final TestRepository tests;
+
+    /**
+     * Questions' repository.
+     */
+    private final QuestionRepository questions;
+
+    /**
+     * Ctor.
+     *
+     * @param testRepository Tests' repository.
+     * @param questionRepository Questions' repository.
+     */
+    public TestServiceImpl(
+        final TestRepository testRepository,
+        final QuestionRepository questionRepository
+    ) {
+        this.tests = testRepository;
+        this.questions = questionRepository;
+    }
 
     @Override
     public TestDto start() {
         log.info("Starting a new test .....");
-        final Set<QuestionDto> items = this.loadQuestions();
-        final var test = new TestDto(
-            1L,
-            items,
-            new Date()
+        final var test = new Test();
+        test.setDateCreated(new Date());
+        this.tests.save(test);
+        final var items = new HashSet<Question>();
+        items.add(
+            this.questions.save(
+                new Question(null, test, "1 + 1", "2", new Date())
+            )
         );
+        items.add(
+            this.questions.save(
+                new Question(null, test, "2 X 2", "4", new Date())
+            )
+        );
+        test.setQuestions(items);
         log.info("New test has been started. Test ID: {}.", test.getId());
-        return test;
-    }
-
-    /**
-     * Load questions.
-     *
-     * @return Questions.
-     */
-    private Set<QuestionDto> loadQuestions() {
-        final Set<QuestionDto> items = new HashSet<>();
-        long i = 1;
-        for (Map.Entry<String, String> question : this.questions.entrySet()) {
-            items.add(
-                new QuestionDto(i, question.getKey(), new Date())
-            );
-            i++;
-        }
-        return items;
+        return new TestDto(this.tests.save(test));
     }
 
     @Override
     public AnswerResultDto answer(final AnswerDto answer) {
-        final var question = this.loadQuestions()
-            .stream()
-            .filter(item ->
-                Objects.equals(item.getId(), answer.getQuestionId())
-            ).findFirst();
+        final var question = this.questions.findById(answer.getQuestionId());
         final var provided = answer.getText();
         if (question.isPresent()) {
-            final var correct = this.questions.get(question.get().getText());
+            final var correct = question.get().getAnswer();
             if (correct.equals(provided)) {
                 return new AnswerResultDto(
                     answer.getQuestionId(),
