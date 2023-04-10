@@ -71,8 +71,35 @@ public final class Question {
     private String answer;
 
     /**
+     * Result of the user's answer.
+     */
+    @Column(nullable = false)
+    private Result result = Result.UNANSWERED;
+
+    /**
      * Date when the question was created.
      */
     @Column(nullable = false)
     private Date dateCreated;
+
+    /**
+     * Result of the user's answer.
+     */
+    public enum Result {
+
+        /**
+         * User has not answered yet.
+         */
+        UNANSWERED,
+
+        /**
+         * User answered correctly.
+         */
+        RIGHT,
+
+        /**
+         * User answered incorrectly.
+         */
+        WRONG
+    }
 }
