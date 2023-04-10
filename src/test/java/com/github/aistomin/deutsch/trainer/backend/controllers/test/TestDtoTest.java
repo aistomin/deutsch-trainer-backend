@@ -44,6 +44,7 @@ final class TestDtoTest {
                         null,
                         UUID.randomUUID().toString(),
                         UUID.randomUUID().toString(),
+                        Question.Result.UNANSWERED,
                         new Date()
                     ),
                     new Question(
@@ -51,6 +52,7 @@ final class TestDtoTest {
                         null,
                         UUID.randomUUID().toString(),
                         UUID.randomUUID().toString(),
+                        Question.Result.UNANSWERED,
                         new Date()
                     ),
                     new Question(
@@ -58,6 +60,7 @@ final class TestDtoTest {
                         null,
                         UUID.randomUUID().toString(),
                         UUID.randomUUID().toString(),
+                        Question.Result.UNANSWERED,
                         new Date()
                     )
                 )

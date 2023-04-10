@@ -15,6 +15,7 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
+import com.github.aistomin.deutsch.trainer.backend.model.Question;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,21 @@ public final class AnswerResultDto {
      * Correct answer.
      */
     private String correct;
+
+    /**
+     * Ctor.
+     *
+     * @param question Question.
+     * @param answer   User's answer.
+     */
+    public AnswerResultDto(final Question question, final String answer) {
+        this(
+            question.getId(),
+            Result.valueOf(question.getResult().name()),
+            answer,
+            question.getAnswer()
+        );
+    }
 
     /**
      * Possible results.

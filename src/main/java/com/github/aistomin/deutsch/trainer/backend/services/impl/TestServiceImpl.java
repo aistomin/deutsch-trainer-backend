@@ -50,7 +50,7 @@ public final class TestServiceImpl implements TestService {
     /**
      * Ctor.
      *
-     * @param testRepository Tests' repository.
+     * @param testRepository     Tests' repository.
      * @param questionRepository Questions' repository.
      */
     public TestServiceImpl(
@@ -70,12 +70,26 @@ public final class TestServiceImpl implements TestService {
         final var items = new HashSet<Question>();
         items.add(
             this.questions.save(
-                new Question(null, test, "1 + 1", "2", new Date())
+                new Question(
+                    null,
+                    test,
+                    "1 + 1",
+                    "2",
+                    Question.Result.UNANSWERED,
+                    new Date()
+                )
             )
         );
         items.add(
             this.questions.save(
-                new Question(null, test, "2 X 2", "4", new Date())
+                new Question(
+                    null,
+                    test,
+                    "2 X 2",
+                    "4",
+                    Question.Result.UNANSWERED,
+                    new Date()
+                )
             )
         );
         test.setQuestions(items);
@@ -88,22 +102,15 @@ public final class TestServiceImpl implements TestService {
         final var question = this.questions.findById(answer.getQuestionId());
         final var provided = answer.getText();
         if (question.isPresent()) {
-            final var correct = question.get().getAnswer();
+            final var entity = question.get();
+            final var correct = entity.getAnswer();
             if (correct.equals(provided)) {
-                return new AnswerResultDto(
-                    answer.getQuestionId(),
-                    AnswerResultDto.Result.RIGHT,
-                    provided,
-                    correct
-                );
+                entity.setResult(Question.Result.RIGHT);
             } else {
-                return new AnswerResultDto(
-                    answer.getQuestionId(),
-                    AnswerResultDto.Result.WRONG,
-                    provided,
-                    correct
-                );
+                entity.setResult(Question.Result.WRONG);
             }
+            this.questions.save(entity);
+            return new AnswerResultDto(entity, provided);
         } else {
             return new AnswerResultDto(
                 answer.getQuestionId(),

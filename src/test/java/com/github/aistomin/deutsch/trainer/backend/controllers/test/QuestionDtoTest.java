@@ -37,6 +37,7 @@ final class QuestionDtoTest {
             null,
             UUID.randomUUID().toString(),
             UUID.randomUUID().toString(),
+            Question.Result.UNANSWERED,
             new Date()
         );
         final var dto = new QuestionDto(question);
