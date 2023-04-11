@@ -1,0 +1,56 @@
+/*
+ * Copyright (c) 2023, Andrej Istomin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary;
+
+import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
+/**
+ * Controller that provides client all the vocabulary related functionality.
+ *
+ * @since 0.1
+ */
+@RestController
+@RequestMapping("/vocabulary")
+public final class VocabularyController {
+
+    /**
+     * Vocabulary service.
+     */
+    private final VocabularyService vocabulary;
+
+    /**
+     * Ctor.
+     *
+     * @param service Vocabulary service.
+     */
+    public VocabularyController(final VocabularyService service) {
+        this.vocabulary = service;
+    }
+
+    /**
+     * Load all the items that exist in the vocabulary.
+     *
+     * @return List of items.
+     */
+    @GetMapping()
+    public List<VocabularyItemDto> loadVocabulary() {
+        return this.vocabulary.loadAll();
+    }
+}
