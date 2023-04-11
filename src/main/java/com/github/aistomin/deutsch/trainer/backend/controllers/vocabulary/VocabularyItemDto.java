@@ -15,11 +15,9 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary;
 
-import com.github.aistomin.deutsch.trainer.backend.controllers.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
 
 /**
  * Vocabulary item DTO.
@@ -45,14 +43,4 @@ public final class VocabularyItemDto {
      * The item in English language.
      */
     private String english;
-
-    /**
-     * User who created the item.
-     */
-    private UserDto user;
-
-    /**
-     * Date when the vocabulary item was created.
-     */
-    private Date dateCreated;
 }

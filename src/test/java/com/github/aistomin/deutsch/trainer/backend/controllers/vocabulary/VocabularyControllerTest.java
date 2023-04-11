@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import java.util.List;
 
 /**
@@ -37,14 +38,30 @@ final class VocabularyControllerTest {
     private TestRestTemplate template;
 
     /**
-     * Check that we can correctly get the vocabulary items.
+     * Check that we can correctly create and get items from the vocabulary.
      */
     @Test
-    void testStart() {
+    void testCreate() {
+        final var empty = this.template.getForEntity(
+            "/vocabulary", List.class
+        ).getBody();
+        Assertions.assertNotNull(empty);
+        Assertions.assertEquals(0, empty.size());
+        final var item = new VocabularyItemDto(null, "die Katze", "the cat");
+        final var created = this.template.postForEntity(
+            "/vocabulary",
+            item,
+            VocabularyItemDto.class
+        );
+        Assertions.assertEquals(HttpStatus.CREATED, created.getStatusCode());
+        final var body = created.getBody();
+        Assertions.assertNotNull(body);
+        Assertions.assertEquals(item.getGerman(), body.getGerman());
+        Assertions.assertEquals(item.getEnglish(), body.getEnglish());
         final var items = this.template.getForEntity(
             "/vocabulary", List.class
         ).getBody();
         Assertions.assertNotNull(items);
-        Assertions.assertEquals(2, items.size());
+        Assertions.assertEquals(1, items.size());
     }
 }
