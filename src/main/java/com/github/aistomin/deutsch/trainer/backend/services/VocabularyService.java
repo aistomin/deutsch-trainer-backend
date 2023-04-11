@@ -31,4 +31,12 @@ public interface VocabularyService {
      * @return List of items.
      */
     List<VocabularyItemDto> loadAll();
+
+    /**
+     * Create a vocabulary item.
+     *
+     * @param item The item that needs to be created.
+     * @return Created item.
+     */
+    VocabularyItemDto create(VocabularyItemDto item);
 }

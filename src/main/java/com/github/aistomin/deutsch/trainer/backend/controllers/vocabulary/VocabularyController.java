@@ -16,7 +16,11 @@
 package com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary;
 
 import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -52,5 +56,20 @@ public final class VocabularyController {
     @GetMapping()
     public List<VocabularyItemDto> loadVocabulary() {
         return this.vocabulary.loadAll();
+    }
+
+    /**
+     * Create a vocabulary item.
+     *
+     * @param item The item that needs to be created.
+     * @return Created item.
+     */
+    @PostMapping()
+    public ResponseEntity<VocabularyItemDto> create(
+        @RequestBody final VocabularyItemDto item
+    ) {
+        return new ResponseEntity<>(
+            this.vocabulary.create(item), HttpStatus.CREATED
+        );
     }
 }

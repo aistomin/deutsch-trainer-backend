@@ -16,12 +16,10 @@
 package com.github.aistomin.deutsch.trainer.backend.services.impl;
 
 import com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary.VocabularyItemDto;
-import com.github.aistomin.deutsch.trainer.backend.services.UserService;
 import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,29 +32,18 @@ import java.util.List;
 public final class VocabularyServiceImpl implements VocabularyService {
 
     /**
-     * User service.
+     * Temporary storage.
      */
-    private final UserService users;
-
-    /**
-     * Ctor.
-     *
-     * @param userService User service.
-     */
-    public VocabularyServiceImpl(final UserService userService) {
-        this.users = userService;
-    }
+    private final List<VocabularyItemDto> vocabulary = new ArrayList<>();
 
     @Override
     public List<VocabularyItemDto> loadAll() {
-        final var user = users.defaultUser();
-        return Arrays.asList(
-            new VocabularyItemDto(
-                1L, "die Katze", "the cat", user, new Date()
-            ),
-            new VocabularyItemDto(
-                2L, "der Hund", "the dog", user, new Date()
-            )
-        );
+        return this.vocabulary;
+    }
+
+    @Override
+    public VocabularyItemDto create(final VocabularyItemDto item) {
+        this.vocabulary.add(item);
+        return item;
     }
 }
