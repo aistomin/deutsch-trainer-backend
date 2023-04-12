@@ -18,7 +18,9 @@ package com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary;
 import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,5 +73,15 @@ public final class VocabularyController {
         return new ResponseEntity<>(
             this.vocabulary.create(item), HttpStatus.CREATED
         );
+    }
+
+    /**
+     * Delete a vocabulary item.
+     *
+     * @param id Vocabulary item ID.
+     */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") final Long id) {
+        this.vocabulary.delete(id);
     }
 }

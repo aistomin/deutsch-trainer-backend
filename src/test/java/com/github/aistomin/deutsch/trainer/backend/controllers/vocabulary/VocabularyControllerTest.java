@@ -47,21 +47,34 @@ final class VocabularyControllerTest {
         ).getBody();
         Assertions.assertNotNull(empty);
         Assertions.assertEquals(0, empty.size());
-        final var item = new VocabularyItemDto(null, "die Katze", "the cat");
-        final var created = this.template.postForEntity(
+        final var cat = new VocabularyItemDto(1L, "die Katze", "the cat");
+        final var createdCat = this.template.postForEntity(
             "/vocabulary",
-            item,
+            cat,
             VocabularyItemDto.class
         );
-        Assertions.assertEquals(HttpStatus.CREATED, created.getStatusCode());
-        final var body = created.getBody();
+        Assertions.assertEquals(HttpStatus.CREATED, createdCat.getStatusCode());
+        final var body = createdCat.getBody();
         Assertions.assertNotNull(body);
-        Assertions.assertEquals(item.getGerman(), body.getGerman());
-        Assertions.assertEquals(item.getEnglish(), body.getEnglish());
+        Assertions.assertEquals(cat.getGerman(), body.getGerman());
+        Assertions.assertEquals(cat.getEnglish(), body.getEnglish());
+        final var dog = new VocabularyItemDto(2L, "der Hund", "the dog");
+        final var createdDog = this.template.postForEntity(
+            "/vocabulary",
+            dog,
+            VocabularyItemDto.class
+        );
+        Assertions.assertEquals(HttpStatus.CREATED, createdDog.getStatusCode());
         final var items = this.template.getForEntity(
             "/vocabulary", List.class
         ).getBody();
         Assertions.assertNotNull(items);
-        Assertions.assertEquals(1, items.size());
+        Assertions.assertEquals(2, items.size());
+        template.delete(String.format("/vocabulary/%d", dog.getId()));
+        final var itemsAfterDeletion = this.template.getForEntity(
+            "/vocabulary", List.class
+        ).getBody();
+        Assertions.assertNotNull(itemsAfterDeletion);
+        Assertions.assertEquals(1, itemsAfterDeletion.size());
     }
 }
