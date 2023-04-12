@@ -39,4 +39,11 @@ public interface VocabularyService {
      * @return Created item.
      */
     VocabularyItemDto create(VocabularyItemDto item);
+
+    /**
+     * Delete a vocabulary item.
+     *
+     * @param id Vocabulary item ID.
+     */
+    void delete(Long id);
 }

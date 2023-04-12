@@ -46,4 +46,14 @@ public final class VocabularyServiceImpl implements VocabularyService {
         this.vocabulary.add(item);
         return item;
     }
+
+    @Override
+    public void delete(final Long id) {
+        this.vocabulary.remove(
+            this.vocabulary.stream()
+                .filter(item -> item.getId().equals(id))
+                .findFirst()
+                .get()
+        );
+    }
 }
