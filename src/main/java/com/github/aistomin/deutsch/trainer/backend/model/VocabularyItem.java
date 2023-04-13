@@ -13,55 +13,70 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary;
+package com.github.aistomin.deutsch.trainer.backend.model;
 
-import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItem;
+import com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary.VocabularyItemDto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.Date;
 
 /**
- * Vocabulary item DTO.
+ * Data object that stores vocabulary data.
  *
  * @since 0.1
  */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public final class VocabularyItemDto {
+@Entity
+public final class VocabularyItem {
 
     /**
-     * Vocabulary item ID.
+     * Item ID.
      */
+    @Id
+    @GeneratedValue(
+        strategy = GenerationType.IDENTITY
+    )
     private Long id;
 
     /**
      * The item in German language.
      */
+    @Column(nullable = false)
     private String german;
 
     /**
      * The item in English language.
      */
+    @Column(nullable = false)
     private String english;
 
     /**
      * Date when the item was created.
      */
+    @Column(nullable = false)
     private Date dateCreated;
 
     /**
      * Ctor.
      *
-     * @param item Vocabulary item.
+     * @param dto Vocabulary item DTO.
      */
-    public VocabularyItemDto(final VocabularyItem item) {
+    public VocabularyItem(final VocabularyItemDto dto) {
         this(
-            item.getId(),
-            item.getGerman(),
-            item.getEnglish(),
-            item.getDateCreated()
+            dto.getId(),
+            dto.getGerman(),
+            dto.getEnglish(),
+            dto.getDateCreated()
         );
     }
 }

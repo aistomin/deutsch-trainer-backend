@@ -16,11 +16,14 @@
 package com.github.aistomin.deutsch.trainer.backend.services.impl;
 
 import com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary.VocabularyItemDto;
+import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItem;
+import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItemRepository;
 import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Vocabulary service's implementation.
@@ -32,28 +35,36 @@ import java.util.List;
 public final class VocabularyServiceImpl implements VocabularyService {
 
     /**
-     * Temporary storage.
+     * Repository.
      */
-    private final List<VocabularyItemDto> vocabulary = new ArrayList<>();
+    private final VocabularyItemRepository vocabulary;
+
+    /**
+     * Ctor.
+     *
+     * @param repo Repository.
+     */
+    public VocabularyServiceImpl(final VocabularyItemRepository repo) {
+        this.vocabulary = repo;
+    }
 
     @Override
     public List<VocabularyItemDto> loadAll() {
-        return this.vocabulary;
+        return this.vocabulary.findAll()
+                .stream()
+                .map(VocabularyItemDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override
     public VocabularyItemDto create(final VocabularyItemDto item) {
-        this.vocabulary.add(item);
-        return item;
+        final var entity = new VocabularyItem(item);
+        entity.setDateCreated(new Date());
+        return new VocabularyItemDto(this.vocabulary.save(entity));
     }
 
     @Override
     public void delete(final Long id) {
-        this.vocabulary.remove(
-            this.vocabulary.stream()
-                .filter(item -> item.getId().equals(id))
-                .findFirst()
-                .get()
-        );
+        this.vocabulary.delete(this.vocabulary.findById(id).get());
     }
 }
