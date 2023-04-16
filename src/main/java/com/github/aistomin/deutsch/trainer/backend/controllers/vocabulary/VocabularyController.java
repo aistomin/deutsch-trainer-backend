@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 /**
@@ -82,6 +83,13 @@ public final class VocabularyController {
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") final Long id) {
-        this.vocabulary.delete(id);
+        final var item = this.vocabulary.findItemById(id);
+        if (item == null) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                String.format("Item with ID = %d not found.", id)
+            );
+        }
+        this.vocabulary.delete(item);
     }
 }

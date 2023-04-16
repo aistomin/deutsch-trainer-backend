@@ -64,7 +64,14 @@ public final class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    public void delete(final Long id) {
-        this.vocabulary.delete(this.vocabulary.findById(id).get());
+    public void delete(final VocabularyItemDto item) {
+        this.vocabulary.delete(new VocabularyItem(item));
+    }
+
+    @Override
+    public VocabularyItemDto findItemById(final Long id) {
+        return this.vocabulary.findById(id)
+            .map(VocabularyItemDto::new)
+            .orElse(null);
     }
 }

@@ -20,7 +20,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,13 +110,28 @@ final class VocabularyControllerTest {
             "/vocabulary", List.class
         ).getBody();
         Assertions.assertNotNull(before);
-        template.delete(
-            String.format("/vocabulary/%d", created.getBody().getId())
+        final var deleted = template.exchange(
+            String.format("/vocabulary/%d", created.getBody().getId()),
+            HttpMethod.DELETE,
+            new HttpEntity<>(new HashMap<String, String>()),
+            Void.class
+        );
+        Assertions.assertEquals(
+            HttpStatus.OK, deleted.getStatusCode()
         );
         final var after = this.template.getForEntity(
             "/vocabulary", List.class
         ).getBody();
         Assertions.assertNotNull(after);
         Assertions.assertEquals(before.size() - 1, after.size());
+        final ResponseEntity<Void> notFound = template.exchange(
+            "/vocabulary/666",
+            HttpMethod.DELETE,
+            new HttpEntity<>(new HashMap<String, String>()),
+            Void.class
+        );
+        Assertions.assertEquals(
+            HttpStatus.NOT_FOUND, notFound.getStatusCode()
+        );
     }
 }
