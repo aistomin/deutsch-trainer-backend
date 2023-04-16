@@ -43,7 +43,15 @@ public interface VocabularyService {
     /**
      * Delete a vocabulary item.
      *
-     * @param id Vocabulary item ID.
+     * @param item Vocabulary item.
      */
-    void delete(Long id);
+    void delete(VocabularyItemDto item);
+
+    /**
+     * Find a vocabulary item by ID.
+     *
+     * @param id ID.
+     * @return Found item or null if the item is not found.
+     */
+    VocabularyItemDto findItemById(Long id);
 }
