@@ -54,4 +54,12 @@ public interface VocabularyService {
      * @return Found item or null if the item is not found.
      */
     VocabularyItemDto findItemById(Long id);
+
+    /**
+     * Update a vocabulary item.
+     *
+     * @param item The item that needs to be edited.
+     * @return Updated item.
+     */
+    VocabularyItemDto update(VocabularyItemDto item);
 }

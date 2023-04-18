@@ -64,6 +64,37 @@ final class VocabularyControllerTest {
     }
 
     /**
+     * Check that we can correctly edit any item in the vocabulary.
+     */
+    @Test
+    void testEdit() {
+        final var cat = new VocabularyItemDto(
+            null, "die Maus", "the mouse", null
+        );
+        final var created = this.template.postForEntity(
+            "/vocabulary",
+            cat,
+            VocabularyItemDto.class
+        );
+        Assertions.assertEquals(HttpStatus.CREATED, created.getStatusCode());
+        final var edited = created.getBody();
+        edited.setGerman("die Maus, -\"e");
+        edited.setEnglish("the mouse, -s");
+        final var response = template.exchange(
+            "/vocabulary",
+            HttpMethod.PUT,
+            new HttpEntity<>(edited),
+            VocabularyItemDto.class
+        );
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        final var body = response.getBody();
+        Assertions.assertNotNull(body);
+        Assertions.assertEquals(edited.getId(), body.getId());
+        Assertions.assertEquals(edited.getGerman(), body.getGerman());
+        Assertions.assertEquals(edited.getEnglish(), body.getEnglish());
+    }
+
+    /**
      * Check that we can correctly load the items from the vocabulary.
      */
     @Test

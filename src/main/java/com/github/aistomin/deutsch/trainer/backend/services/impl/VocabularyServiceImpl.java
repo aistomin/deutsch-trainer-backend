@@ -74,4 +74,11 @@ public final class VocabularyServiceImpl implements VocabularyService {
             .map(VocabularyItemDto::new)
             .orElse(null);
     }
+
+    @Override
+    public VocabularyItemDto update(final VocabularyItemDto item) {
+        return new VocabularyItemDto(
+            this.vocabulary.save(new VocabularyItem(item))
+        );
+    }
 }
