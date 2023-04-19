@@ -48,7 +48,12 @@ final class VocabularyControllerTest {
     @Test
     void testCreate() {
         final var cat = new VocabularyItemDto(
-            null, "die Katze", "the cat", null
+            null,
+            "die Katze",
+            "the cat",
+            "Die Katze frisst Mäuse.",
+            "https://cats.com/picture1.jpg",
+            null
         );
         final var created = this.template.postForEntity(
             "/vocabulary",
@@ -61,6 +66,9 @@ final class VocabularyControllerTest {
         Assertions.assertNotNull(body.getId());
         Assertions.assertEquals(cat.getGerman(), body.getGerman());
         Assertions.assertEquals(cat.getEnglish(), body.getEnglish());
+        Assertions.assertEquals(cat.getExample(), body.getExample());
+        Assertions.assertEquals(cat.getPictureUrl(), body.getPictureUrl());
+        Assertions.assertNotNull(body.getDateCreated());
     }
 
     /**
@@ -69,7 +77,7 @@ final class VocabularyControllerTest {
     @Test
     void testEdit() {
         final var cat = new VocabularyItemDto(
-            null, "die Maus", "the mouse", null
+            null, "die Maus", "the mouse", null, null, null
         );
         final var created = this.template.postForEntity(
             "/vocabulary",
@@ -102,14 +110,14 @@ final class VocabularyControllerTest {
         final var id1 = this.template.postForEntity(
             "/vocabulary",
             new VocabularyItemDto(
-                null, "die Katze", "the cat", null
+                null, "die Katze", "the cat", null, null, null
             ),
             VocabularyItemDto.class
         ).getBody().getId();
         final var id2 = this.template.postForEntity(
             "/vocabulary",
             new VocabularyItemDto(
-                null, "der Hund", "the dog", null
+                null, "der Hund", "the dog", null, null, null
             ),
             VocabularyItemDto.class
         ).getBody().getId();
@@ -132,7 +140,7 @@ final class VocabularyControllerTest {
         final var created = this.template.postForEntity(
             "/vocabulary",
             new VocabularyItemDto(
-                null, "der Hund", "the dog", null
+                null, "der Hund", "the dog", null, null, null
             ),
             VocabularyItemDto.class
         );

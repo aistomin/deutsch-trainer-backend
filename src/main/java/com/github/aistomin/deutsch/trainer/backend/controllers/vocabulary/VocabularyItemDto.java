@@ -47,6 +47,16 @@ public final class VocabularyItemDto {
     private String english;
 
     /**
+     * The example sentence or any other hint.
+     */
+    private String example;
+
+    /**
+     * The picture that helps to remember the item.
+     */
+    private String pictureUrl;
+
+    /**
      * Date when the item was created.
      */
     private Date dateCreated;
@@ -61,6 +71,8 @@ public final class VocabularyItemDto {
             item.getId(),
             item.getGerman(),
             item.getEnglish(),
+            item.getExample(),
+            item.getPictureUrl(),
             item.getDateCreated()
         );
     }
