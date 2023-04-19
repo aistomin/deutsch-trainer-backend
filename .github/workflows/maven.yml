@@ -37,8 +37,8 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '19'
-        distribution: 'oracle'
-        cache: maven
+        distribution: 'temurin'
+        check-latest: true
     - name: Build with Maven
       run: mvn clean install package
     - name: Upload coverage reports to Codecov
