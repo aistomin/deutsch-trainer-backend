@@ -15,7 +15,7 @@
 	<name>deutsch-trainer-backend</name>
 	<description>Backend of the Deutschtrainer app.</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>19</java.version>
 		<linkXRef>false</linkXRef>
 	</properties>
 	<dependencies>
