@@ -15,6 +15,7 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary;
 
+import com.github.aistomin.deutsch.trainer.backend.controllers.utils.TestUserHolder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,12 @@ final class VocabularyControllerTest {
     private TestRestTemplate template;
 
     /**
+     * Test user's holder.
+     */
+    @Autowired
+    private TestUserHolder holder;
+
+    /**
      * Check that we can correctly create item in the vocabulary.
      */
     @Test
@@ -53,6 +60,7 @@ final class VocabularyControllerTest {
             "the cat",
             "Die Katze frisst Mäuse.",
             "https://cats.com/picture1.jpg",
+            this.holder.defaultUser(),
             null
         );
         final var created = this.template.postForEntity(
@@ -77,7 +85,13 @@ final class VocabularyControllerTest {
     @Test
     void testEdit() {
         final var cat = new VocabularyItemDto(
-            null, "die Maus", "the mouse", null, null, null
+            null,
+            "die Maus",
+            "the mouse",
+            null,
+            null,
+            this.holder.defaultUser(),
+            null
         );
         final var created = this.template.postForEntity(
             "/vocabulary",
@@ -110,14 +124,26 @@ final class VocabularyControllerTest {
         final var id1 = this.template.postForEntity(
             "/vocabulary",
             new VocabularyItemDto(
-                null, "die Katze", "the cat", null, null, null
+                null,
+                "die Katze",
+                "the cat",
+                null,
+                null,
+                this.holder.defaultUser(),
+                null
             ),
             VocabularyItemDto.class
         ).getBody().getId();
         final var id2 = this.template.postForEntity(
             "/vocabulary",
             new VocabularyItemDto(
-                null, "der Hund", "the dog", null, null, null
+                null,
+                "der Hund",
+                "the dog",
+                null,
+                null,
+                this.holder.defaultUser(),
+                null
             ),
             VocabularyItemDto.class
         ).getBody().getId();
@@ -140,7 +166,13 @@ final class VocabularyControllerTest {
         final var created = this.template.postForEntity(
             "/vocabulary",
             new VocabularyItemDto(
-                null, "der Hund", "the dog", null, null, null
+                null,
+                "der Hund",
+                "the dog",
+                null,
+                null,
+                this.holder.defaultUser(),
+                null
             ),
             VocabularyItemDto.class
         );

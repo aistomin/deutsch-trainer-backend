@@ -41,7 +41,7 @@ final class TestDtoTest {
                 Arrays.asList(
                     new Question(
                         random.nextLong(),
-                        null,
+                        null, null,
                         UUID.randomUUID().toString(),
                         UUID.randomUUID().toString(),
                         Question.Result.UNANSWERED,
@@ -49,7 +49,7 @@ final class TestDtoTest {
                     ),
                     new Question(
                         random.nextLong(),
-                        null,
+                        null, null,
                         UUID.randomUUID().toString(),
                         UUID.randomUUID().toString(),
                         Question.Result.UNANSWERED,
@@ -57,7 +57,7 @@ final class TestDtoTest {
                     ),
                     new Question(
                         random.nextLong(),
-                        null,
+                        null, null,
                         UUID.randomUUID().toString(),
                         UUID.randomUUID().toString(),
                         Question.Result.UNANSWERED,

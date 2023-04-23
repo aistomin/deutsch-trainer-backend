@@ -15,6 +15,7 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.model;
 
+import com.github.aistomin.deutsch.trainer.backend.controllers.user.UserDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -53,4 +54,13 @@ public final class User {
      */
     @Column(nullable = false, unique = true)
     private String username;
+
+    /**
+     * Ctor.
+     *
+     * @param dto User DTO.
+     */
+    public User(final UserDto dto) {
+        this(dto.getId(), dto.getUsername());
+    }
 }

@@ -18,6 +18,7 @@ package com.github.aistomin.deutsch.trainer.backend.services.impl;
 import com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary.VocabularyItemDto;
 import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItem;
 import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItemRepository;
+import com.github.aistomin.deutsch.trainer.backend.services.UserService;
 import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,25 +36,36 @@ import java.util.stream.Collectors;
 public final class VocabularyServiceImpl implements VocabularyService {
 
     /**
-     * Repository.
+     * Vocabulary's repository.
      */
     private final VocabularyItemRepository vocabulary;
 
     /**
+     * User's service.
+     */
+    private final UserService users;
+
+    /**
      * Ctor.
      *
-     * @param repo Repository.
+     * @param repo        Vocabulary's repository.
+     * @param userService User's service.
      */
-    public VocabularyServiceImpl(final VocabularyItemRepository repo) {
+    public VocabularyServiceImpl(
+        final VocabularyItemRepository repo,
+        final UserService userService
+    ) {
         this.vocabulary = repo;
+        this.users = userService;
     }
 
     @Override
     public List<VocabularyItemDto> loadAll() {
-        return this.vocabulary.findAll()
-                .stream()
-                .map(VocabularyItemDto::new)
-                .collect(Collectors.toList());
+        return this.vocabulary
+            .findAllByOwner(this.users.defaultUser().toEntity())
+            .stream()
+            .map(VocabularyItemDto::new)
+            .collect(Collectors.toList());
     }
 
     @Override

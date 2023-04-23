@@ -21,6 +21,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -73,6 +74,12 @@ public final class VocabularyItem {
     private String pictureUrl;
 
     /**
+     * The user that this item belongs to.
+     */
+    @ManyToOne
+    private User owner;
+
+    /**
      * Date when the item was created.
      */
     @Column(nullable = false)
@@ -90,6 +97,7 @@ public final class VocabularyItem {
             dto.getEnglish(),
             dto.getExample(),
             dto.getPictureUrl(),
+            new User(dto.getOwner()),
             dto.getDateCreated()
         );
     }

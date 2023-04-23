@@ -52,11 +52,18 @@ public final class Question {
     private Long id;
 
     /**
-     * Test that question belongs to.
+     * Test that the question belongs to.
      */
     @ManyToOne
     @JoinColumn(nullable = false)
     private Test test;
+
+    /**
+     * Vocabulary item that the question belongs to.
+     */
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private VocabularyItem vocabularyItem;
 
     /**
      * Question's text.
