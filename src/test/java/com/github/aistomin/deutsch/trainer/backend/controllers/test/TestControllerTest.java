@@ -18,6 +18,8 @@ package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 import com.github.aistomin.deutsch.trainer.backend.controllers.utils.TestUserHolder;
 import com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary.VocabularyItemDto;
 import com.github.aistomin.deutsch.trainer.backend.model.QuestionRepository;
+import com.github.aistomin.deutsch.trainer.backend.model.Test.Status;
+import com.github.aistomin.deutsch.trainer.backend.model.TestRepository;
 import com.github.aistomin.deutsch.trainer.backend.services.impl.TestServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -56,6 +58,12 @@ final class TestControllerTest {
      */
     @Autowired
     private QuestionRepository questions;
+
+    /**
+     * Test's repository.
+     */
+    @Autowired
+    private TestRepository tests;
 
     /**
      * Check that we can correctly start a test.
@@ -98,7 +106,8 @@ final class TestControllerTest {
         final var test = this.template.getForEntity(
             "/test/start", TestDto.class
         ).getBody();
-        final var question = new ArrayList<>(test.getQuestions())
+        final var unanswered = new ArrayList<>(test.getQuestions());
+        final var question = unanswered
             .stream()
             .findFirst()
             .get();
@@ -130,6 +139,7 @@ final class TestControllerTest {
         Assertions.assertEquals(
             cheat.getAnswer(), wrong.getBody().getCorrect()
         );
+        unanswered.remove(question);
         final var missing = this.template.postForEntity(
             "/test/answer",
             new HttpEntity<>(
@@ -140,6 +150,9 @@ final class TestControllerTest {
         Assertions.assertEquals(HttpStatus.OK, missing.getStatusCode());
         Assertions.assertEquals(
             AnswerResultDto.Result.NOT_FOUND, missing.getBody().getResult()
+        );
+        Assertions.assertEquals(
+            Status.ACTIVE, this.tests.findById(test.getId()).get().getStatus()
         );
     }
 

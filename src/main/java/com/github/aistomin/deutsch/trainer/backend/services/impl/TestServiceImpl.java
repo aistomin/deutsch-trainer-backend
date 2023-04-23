@@ -122,6 +122,16 @@ public final class TestServiceImpl implements TestService {
                 entity.setResult(Question.Result.WRONG);
             }
             this.questions.save(entity);
+            final var test = entity.getTest();
+            final var allTheQuestionsAreAnswered = this.questions
+                .findAllByTest(test).stream()
+                .filter(q -> q.getResult() == Question.Result.UNANSWERED)
+                .findAny()
+                .isEmpty();
+            if (allTheQuestionsAreAnswered) {
+                test.setStatus(Test.Status.COMPLETED);
+                this.tests.save(test);
+            }
             return new AnswerResultDto(entity, provided);
         } else {
             return new AnswerResultDto(

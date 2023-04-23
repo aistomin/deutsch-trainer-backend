@@ -65,6 +65,7 @@ final class TestDtoTest {
                     )
                 )
             ),
+            Test.Status.ACTIVE,
             new Date()
         );
         final var dto = new TestDto(test);
