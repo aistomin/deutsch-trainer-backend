@@ -48,6 +48,11 @@ public final class QuestionDto {
     private VocabularyItemDto vocabularyItem;
 
     /**
+     * Is question answered?
+     */
+    private Boolean answered;
+
+    /**
      * Date when the question was created.
      */
     private Date dateCreated;
@@ -63,6 +68,7 @@ public final class QuestionDto {
             question.getText(),
             question.getVocabularyItem() != null
                 ? new VocabularyItemDto(question.getVocabularyItem()) : null,
+            question.getResult() != Question.Result.UNANSWERED,
             question.getDateCreated()
         );
     }

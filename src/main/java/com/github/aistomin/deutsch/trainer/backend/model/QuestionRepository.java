@@ -16,6 +16,7 @@
 package com.github.aistomin.deutsch.trainer.backend.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 /**
  * Data access class for {@link Question}.
@@ -23,4 +24,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 0.1
  */
 public interface QuestionRepository extends JpaRepository<Question, Long> {
+
+    /**
+     * Find all questions in the test.
+     *
+     * @param test Test.
+     * @return Questions.
+     */
+    List<Question> findAllByTest(Test test);
 }

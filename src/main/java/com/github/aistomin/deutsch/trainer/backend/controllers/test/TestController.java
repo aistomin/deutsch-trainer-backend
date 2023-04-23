@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * Controller that provides client all the test related functionality.
@@ -64,5 +65,15 @@ public final class TestController {
     @PostMapping("/answer")
     public AnswerResultDto answer(@RequestBody final AnswerDto answer) {
         return this.test.answer(answer);
+    }
+
+    /**
+     * User's tests' statistic.
+     *
+     * @return Statistics.
+     */
+    @GetMapping("/stat")
+    public List<UserStatisticItemDto> statistic() {
+        return this.test.statistics();
     }
 }

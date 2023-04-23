@@ -17,6 +17,7 @@ package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
 import com.github.aistomin.deutsch.trainer.backend.model.Question;
 import com.github.aistomin.deutsch.trainer.backend.model.Test;
+import com.github.aistomin.deutsch.trainer.backend.model.User;
 import org.junit.jupiter.api.Assertions;
 import java.util.Arrays;
 import java.util.Date;
@@ -65,6 +66,8 @@ final class TestDtoTest {
                     )
                 )
             ),
+            Test.Status.ACTIVE,
+            new User(),
             new Date()
         );
         final var dto = new TestDto(test);

@@ -20,6 +20,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -58,8 +60,37 @@ public final class Test {
     private Set<Question> questions;
 
     /**
+     * Test's status.
+     */
+    @Column(nullable = false)
+    private Status status = Status.ACTIVE;
+
+    /**
+     * User who took the test.
+     */
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User user;
+
+    /**
      * Date when the test was created.
      */
     @Column(nullable = false)
     private Date dateCreated;
+
+    /**
+     * The test's status.
+     */
+    public enum Status {
+
+        /**
+         * User is still answering.
+         */
+        ACTIVE,
+
+        /**
+         * The test is completed.
+         */
+        COMPLETED
+    }
 }

@@ -15,6 +15,7 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
+import com.github.aistomin.deutsch.trainer.backend.controllers.user.UserDto;
 import com.github.aistomin.deutsch.trainer.backend.model.Test;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,6 +45,11 @@ public final class TestDto {
     private Set<QuestionDto> questions;
 
     /**
+     * User who took the test.
+     */
+    private UserDto user;
+
+    /**
      * Date when the test was created.
      */
     private Date dateCreated;
@@ -59,6 +65,7 @@ public final class TestDto {
             test.getQuestions()
                 .stream()
                 .map(QuestionDto::new).collect(Collectors.toSet()),
+            new UserDto(test.getUser()),
             test.getDateCreated()
         );
     }
