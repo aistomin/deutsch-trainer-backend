@@ -18,6 +18,8 @@ package com.github.aistomin.deutsch.trainer.backend.services;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerResultDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.TestDto;
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.UserStatisticItemDto;
+import java.util.List;
 
 /**
  * Test's service.
@@ -40,4 +42,11 @@ public interface TestService {
      * @return Answer result.
      */
     AnswerResultDto answer(AnswerDto answer);
+
+    /**
+     * User's tests' statistic.
+     *
+     * @return Statistics.
+     */
+    List<UserStatisticItemDto> statistics();
 }

@@ -18,18 +18,22 @@ package com.github.aistomin.deutsch.trainer.backend.services.impl;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.AnswerResultDto;
 import com.github.aistomin.deutsch.trainer.backend.controllers.test.TestDto;
+import com.github.aistomin.deutsch.trainer.backend.controllers.test.UserStatisticItemDto;
 import com.github.aistomin.deutsch.trainer.backend.model.Question;
 import com.github.aistomin.deutsch.trainer.backend.model.QuestionRepository;
 import com.github.aistomin.deutsch.trainer.backend.model.Test;
 import com.github.aistomin.deutsch.trainer.backend.model.TestRepository;
 import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItem;
 import com.github.aistomin.deutsch.trainer.backend.services.TestService;
+import com.github.aistomin.deutsch.trainer.backend.services.UserService;
 import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Test's service's implementation.
@@ -61,26 +65,35 @@ public final class TestServiceImpl implements TestService {
     private final QuestionRepository questions;
 
     /**
+     * User's service.
+     */
+    private final UserService users;
+
+    /**
      * Ctor.
      *
      * @param testRepository     Tests' repository.
      * @param vocabularyService  Vocabulary's service.
      * @param questionRepository Questions' repository.
+     * @param userService        User's service.
      */
     public TestServiceImpl(
         final TestRepository testRepository,
         final VocabularyService vocabularyService,
-        final QuestionRepository questionRepository
+        final QuestionRepository questionRepository,
+        final UserService userService
     ) {
         this.tests = testRepository;
         this.vocabulary = vocabularyService;
         this.questions = questionRepository;
+        this.users = userService;
     }
 
     @Override
     public TestDto start() {
         log.info("Starting a new test .....");
         final var test = new Test();
+        test.setUser(this.users.defaultUser().toEntity());
         test.setDateCreated(new Date());
         this.tests.save(test);
         final var all = this.vocabulary.loadAll();
@@ -141,5 +154,29 @@ public final class TestServiceImpl implements TestService {
                 null
             );
         }
+    }
+
+    @Override
+    public List<UserStatisticItemDto> statistics() {
+        final var user = this.users.defaultUser().toEntity();
+        final var taken = this.tests.findAllByUserOrderByDateCreatedDesc(
+            user
+        );
+        return taken.stream()
+            .map(test -> {
+                final var all = this.questions.findAllByTest(test);
+                return new UserStatisticItemDto(
+                    user.getId(),
+                    test.getId(),
+                    all.size(),
+                    all.stream()
+                        .filter(question ->
+                            question.getResult() == Question.Result.RIGHT
+                        )
+                        .collect(Collectors.toSet()).size(),
+                    test.getDateCreated()
+                );
+            })
+            .collect(Collectors.toList());
     }
 }

@@ -13,23 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aistomin.deutsch.trainer.backend.model;
+package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.util.Date;
 
 /**
- * Data access class for {@link Test}.
+ * User's statistic's item DTO.
  *
  * @since 0.1
  */
-public interface TestRepository extends JpaRepository<Test, Long> {
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public final class UserStatisticItemDto {
 
     /**
-     * Find all tests by user.
-     *
-     * @param user User.
-     * @return All the tests taken by user.
+     * User who took the test.
      */
-    List<Test> findAllByUserOrderByDateCreatedDesc(User user);
+    private Long userId;
+
+    /**
+     * Test ID.
+     */
+    private Long testId;
+
+    /**
+     * Total amount of questions.
+     */
+    private Integer total;
+
+    /**
+     * Amount of correct answers.
+     */
+    private Integer correct;
+
+    /**
+     * Test's date.
+     */
+    private Date date;
 }
