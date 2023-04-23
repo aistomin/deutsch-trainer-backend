@@ -15,6 +15,7 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.controllers.test;
 
+import com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary.VocabularyItemDto;
 import com.github.aistomin.deutsch.trainer.backend.model.Question;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,6 +43,11 @@ public final class QuestionDto {
     private String text;
 
     /**
+     * Vocabulary item that the question belongs to.
+     */
+    private VocabularyItemDto vocabularyItem;
+
+    /**
      * Date when the question was created.
      */
     private Date dateCreated;
@@ -55,6 +61,8 @@ public final class QuestionDto {
         this(
             question.getId(),
             question.getText(),
+            question.getVocabularyItem() != null
+                ? new VocabularyItemDto(question.getVocabularyItem()) : null,
             question.getDateCreated()
         );
     }

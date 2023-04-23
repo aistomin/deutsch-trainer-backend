@@ -15,6 +15,7 @@
  */
 package com.github.aistomin.deutsch.trainer.backend.controllers.vocabulary;
 
+import com.github.aistomin.deutsch.trainer.backend.controllers.user.UserDto;
 import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -57,6 +58,11 @@ public final class VocabularyItemDto {
     private String pictureUrl;
 
     /**
+     * The user that this item belongs to.
+     */
+    private UserDto owner;
+
+    /**
      * Date when the item was created.
      */
     private Date dateCreated;
@@ -73,6 +79,7 @@ public final class VocabularyItemDto {
             item.getEnglish(),
             item.getExample(),
             item.getPictureUrl(),
+            item.getOwner() != null ? new UserDto(item.getOwner()) : null,
             item.getDateCreated()
         );
     }

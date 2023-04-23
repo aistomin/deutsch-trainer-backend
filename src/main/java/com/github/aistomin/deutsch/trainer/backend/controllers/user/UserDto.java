@@ -48,4 +48,13 @@ public final class UserDto {
     public UserDto(final User user) {
         this(user.getId(), user.getUsername());
     }
+
+    /**
+     * Convert DTO to the entity.
+     *
+     * @return Entity.
+     */
+    public User toEntity() {
+        return new User(this);
+    }
 }

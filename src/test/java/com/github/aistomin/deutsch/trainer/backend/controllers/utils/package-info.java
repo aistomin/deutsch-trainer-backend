@@ -13,24 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.aistomin.deutsch.trainer.backend.model;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
-
 /**
- * Data access class for {@link VocabularyItem}.
+ * Package for the test utils.
  *
  * @since 0.1
  */
-public interface VocabularyItemRepository
-    extends JpaRepository<VocabularyItem, Long> {
-
-    /**
-     * Find all the items that belong to the user.
-     *
-     * @param user The user.
-     * @return All the items.
-     */
-    List<VocabularyItem> findAllByOwner(User user);
-}
+package com.github.aistomin.deutsch.trainer.backend.controllers.utils;

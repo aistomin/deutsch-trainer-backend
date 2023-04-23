@@ -22,11 +22,14 @@ import com.github.aistomin.deutsch.trainer.backend.model.Question;
 import com.github.aistomin.deutsch.trainer.backend.model.QuestionRepository;
 import com.github.aistomin.deutsch.trainer.backend.model.Test;
 import com.github.aistomin.deutsch.trainer.backend.model.TestRepository;
+import com.github.aistomin.deutsch.trainer.backend.model.VocabularyItem;
 import com.github.aistomin.deutsch.trainer.backend.services.TestService;
+import com.github.aistomin.deutsch.trainer.backend.services.VocabularyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Random;
 
 /**
  * Test's service's implementation.
@@ -38,9 +41,19 @@ import java.util.HashSet;
 public final class TestServiceImpl implements TestService {
 
     /**
+     * Count of the questions that we return to the user.
+     */
+    public static final int QUESTIONS_COUNT = 10;
+
+    /**
      * Tests' repository.
      */
     private final TestRepository tests;
+
+    /**
+     * Vocabulary's service.
+     */
+    private final VocabularyService vocabulary;
 
     /**
      * Questions' repository.
@@ -51,13 +64,16 @@ public final class TestServiceImpl implements TestService {
      * Ctor.
      *
      * @param testRepository     Tests' repository.
+     * @param vocabularyService  Vocabulary's service.
      * @param questionRepository Questions' repository.
      */
     public TestServiceImpl(
         final TestRepository testRepository,
+        final VocabularyService vocabularyService,
         final QuestionRepository questionRepository
     ) {
         this.tests = testRepository;
+        this.vocabulary = vocabularyService;
         this.questions = questionRepository;
     }
 
@@ -67,31 +83,27 @@ public final class TestServiceImpl implements TestService {
         final var test = new Test();
         test.setDateCreated(new Date());
         this.tests.save(test);
+        final var all = this.vocabulary.loadAll();
         final var items = new HashSet<Question>();
-        items.add(
-            this.questions.save(
-                new Question(
-                    null,
-                    test,
-                    "1 + 1",
-                    "2",
-                    Question.Result.UNANSWERED,
-                    new Date()
-                )
-            )
-        );
-        items.add(
-            this.questions.save(
-                new Question(
-                    null,
-                    test,
-                    "2 X 2",
-                    "4",
-                    Question.Result.UNANSWERED,
-                    new Date()
-                )
-            )
-        );
+        if (all.size() > 0) {
+            final var random = new Random();
+            for (int i = 0; i < QUESTIONS_COUNT; i++) {
+                final var item = all.get(random.nextInt(all.size()));
+                final var ger2eng = random.nextBoolean();
+                final var question = new Question();
+                if (ger2eng) {
+                    question.setText(item.getGerman());
+                    question.setAnswer(item.getEnglish());
+                } else {
+                    question.setText(item.getEnglish());
+                    question.setAnswer(item.getGerman());
+                }
+                question.setTest(test);
+                question.setVocabularyItem(new VocabularyItem(item));
+                question.setDateCreated(new Date());
+                items.add(this.questions.save(question));
+            }
+        }
         test.setQuestions(items);
         log.info("New test has been started. Test ID: {}.", test.getId());
         return new TestDto(this.tests.save(test));

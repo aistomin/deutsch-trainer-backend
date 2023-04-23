@@ -34,7 +34,7 @@ final class QuestionDtoTest {
     void testConvert() {
         final var question = new Question(
             new Random().nextLong(),
-            null,
+            null, null,
             UUID.randomUUID().toString(),
             UUID.randomUUID().toString(),
             Question.Result.UNANSWERED,
