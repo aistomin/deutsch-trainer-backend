@@ -23,6 +23,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Application.
@@ -71,6 +73,23 @@ public class Application {
                 log.info("Admin user is created. Username: {}", andrej);
             }
             log.info("Application is up and running.");
+        };
+    }
+
+    /**
+     * Create CORS configurer bean.
+     *
+     * @return CORS configurer bean.
+     */
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(final CorsRegistry registry) {
+                registry
+                    .addMapping("/**")
+                    .allowedOrigins("http://localhost:5173");
+            }
         };
     }
 }
