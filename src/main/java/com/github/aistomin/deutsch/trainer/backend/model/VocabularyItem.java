@@ -97,7 +97,7 @@ public final class VocabularyItem {
             dto.getEnglish(),
             dto.getExample(),
             dto.getPictureUrl(),
-            new User(dto.getOwner()),
+            dto.getOwner() != null ? new User(dto.getOwner()) : null,
             dto.getDateCreated()
         );
     }
