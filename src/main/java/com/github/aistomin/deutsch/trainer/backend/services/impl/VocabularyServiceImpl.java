@@ -72,6 +72,7 @@ public final class VocabularyServiceImpl implements VocabularyService {
     public VocabularyItemDto create(final VocabularyItemDto item) {
         final var entity = new VocabularyItem(item);
         entity.setDateCreated(new Date());
+        entity.setOwner(this.users.defaultUser().toEntity());
         return new VocabularyItemDto(this.vocabulary.save(entity));
     }
 

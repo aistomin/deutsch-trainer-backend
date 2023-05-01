@@ -77,6 +77,7 @@ final class VocabularyControllerTest {
         Assertions.assertEquals(cat.getExample(), body.getExample());
         Assertions.assertEquals(cat.getPictureUrl(), body.getPictureUrl());
         Assertions.assertNotNull(body.getDateCreated());
+        Assertions.assertNotNull(body.getOwner());
     }
 
     /**
